@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Summer2022\\PRN231\\Assignment\\todo-api\\TodoApp_WebAPI\\TodoApp_WebAPI\\TodoApp_WebAPI.csproj": {}
+    "D:\\ProjectCSharp\\PRN231\\Assignment\\todo-api\\TodoApp_WebAPI\\TodoApp_WebAPI\\TodoApp_WebAPI.csproj": {}
   },
   "projects": {
-    "D:\\Summer2022\\PRN231\\Assignment\\todo-api\\TodoApp_WebAPI\\TodoApp_WebAPI\\TodoApp_WebAPI.csproj": {
+    "D:\\ProjectCSharp\\PRN231\\Assignment\\todo-api\\TodoApp_WebAPI\\TodoApp_WebAPI\\TodoApp_WebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Summer2022\\PRN231\\Assignment\\todo-api\\TodoApp_WebAPI\\TodoApp_WebAPI\\TodoApp_WebAPI.csproj",
+        "projectUniqueName": "D:\\ProjectCSharp\\PRN231\\Assignment\\todo-api\\TodoApp_WebAPI\\TodoApp_WebAPI\\TodoApp_WebAPI.csproj",
         "projectName": "TodoApp_WebAPI",
-        "projectPath": "D:\\Summer2022\\PRN231\\Assignment\\todo-api\\TodoApp_WebAPI\\TodoApp_WebAPI\\TodoApp_WebAPI.csproj",
-        "packagesPath": "C:\\Users\\Acer\\.nuget\\packages\\",
-        "outputPath": "D:\\Summer2022\\PRN231\\Assignment\\todo-api\\TodoApp_WebAPI\\TodoApp_WebAPI\\obj\\",
+        "projectPath": "D:\\ProjectCSharp\\PRN231\\Assignment\\todo-api\\TodoApp_WebAPI\\TodoApp_WebAPI\\TodoApp_WebAPI.csproj",
+        "packagesPath": "C:\\Users\\hoang\\.nuget\\packages\\",
+        "outputPath": "D:\\ProjectCSharp\\PRN231\\Assignment\\todo-api\\TodoApp_WebAPI\\TodoApp_WebAPI\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Acer\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\hoang\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -43,6 +46,10 @@
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.17, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[5.0.17, )"
             },
