@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -11,6 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TodoApp_WebAPI.Models;
+using TodoApp_WebAPI.Repositories;
+using TodoApp_WebAPI.RepositoriesImplementation;
 
 namespace TodoApp_WebAPI
 {
@@ -26,8 +30,12 @@ namespace TodoApp_WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddDbContext<TodoAppContext>(db => db.UseSqlServer(Configuration.GetConnectionString("TodoDb")));
+            services.AddCors();
             services.AddControllers();
+            services.AddSingleton<IGroupRepository, GroupRepoImplementation>();
+            services.AddSingleton<ITaskRepository, TaskRepoImplementation>();
+            services.AddSingleton<ITaskListRepository, TaskListRepoImplementation>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TodoApp_WebAPI", Version = "v1" });
@@ -43,6 +51,11 @@ namespace TodoApp_WebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoApp_WebAPI v1"));
             }
+
+            app.UseCors(builder =>
+            {
+                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            });
 
             app.UseHttpsRedirection();
 
