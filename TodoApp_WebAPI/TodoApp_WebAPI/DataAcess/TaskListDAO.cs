@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -48,6 +49,7 @@ namespace TodoApp_WebAPI.DataAcess
         {
             using (TodoAppContext context = new TodoAppContext())
             {
+                taskList.TaskCount = 0;
                 context.TaskLists.Add(taskList);
                 await context.SaveChangesAsync();
             }
@@ -77,6 +79,30 @@ namespace TodoApp_WebAPI.DataAcess
             using (TodoAppContext context = new TodoAppContext())
             {
                 context.TaskLists.Update(taskList);
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async System.Threading.Tasks.Task IncreaseCountById(int taskListId)
+        {
+            using (TodoAppContext context = new TodoAppContext())
+            {
+                TaskList taskList = context.TaskLists.Find(taskListId);
+                taskList.TaskCount += 1;
+                context.Entry<TaskList>(taskList).State = EntityState.Detached;
+                context.Update(taskList);
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async System.Threading.Tasks.Task DecreseCountById(int taskListId)
+        {
+            using (TodoAppContext context = new TodoAppContext())
+            {
+                TaskList taskList = context.TaskLists.Find(taskListId);
+                taskList.TaskCount -= 1;
+                context.Entry<TaskList>(taskList).State = EntityState.Detached;
+                context.Update(taskList);
                 await context.SaveChangesAsync();
             }
         }

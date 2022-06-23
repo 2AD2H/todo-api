@@ -48,6 +48,10 @@ namespace TodoApp_WebAPI.DataAcess
         {
             using (TodoAppContext context = new TodoAppContext())
             {
+                if(task.ListId != null)
+                {
+                    await TaskListDAO.Instance.IncreaseCountById((int)task.ListId);
+                }
                 context.Tasks.Add(task);
                 await context.SaveChangesAsync();
             }
@@ -57,10 +61,29 @@ namespace TodoApp_WebAPI.DataAcess
         {
             using (TodoAppContext context = new TodoAppContext())
             {
+                Models.Task originalTask = context.Tasks.Find(task.Id);
+                // case 1: thêm task ở ngoài list vào 1 list nào đó 
+                if (originalTask.ListId == null && task.ListId != null)
+                {
+                    await TaskListDAO.Instance.IncreaseCountById((int)task.ListId);
+                }
+                // case 2: Chuyển task từ list này vào list khác
+                else if(originalTask.ListId != null && task.ListId != null)
+                {
+                    await TaskListDAO.Instance.IncreaseCountById((int)task.ListId);
+                    await TaskListDAO.Instance.DecreseCountById((int)originalTask.ListId);
+                }
+                // case 3: Chuyển task từ list ra ngoài
+                else if(originalTask.ListId != null && task.ListId == null)
+                {
+                    await TaskListDAO.Instance.DecreseCountById((int)originalTask.ListId);
+                }
+                context.Entry<Models.Task>(originalTask).State = EntityState.Detached;
                 context.Tasks.Update(task);
                 await context.SaveChangesAsync();
             }
         }
+
 
         public async System.Threading.Tasks.Task DeleteTask(int taskId)
         {
@@ -69,6 +92,10 @@ namespace TodoApp_WebAPI.DataAcess
                 Models.Task task = context.Tasks.Where(t => t.Id == taskId).FirstOrDefault();
                 if (task != null)
                 {
+                    if(task.ListId != null)
+                    {
+                        await TaskListDAO.Instance.DecreseCountById((int)task.ListId);
+                    }
                     context.Tasks.Remove(task);
                     await context.SaveChangesAsync();
                 }
