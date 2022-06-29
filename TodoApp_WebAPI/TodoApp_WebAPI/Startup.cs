@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -36,9 +37,38 @@ namespace TodoApp_WebAPI
             services.AddSingleton<IGroupRepository, GroupRepoImplementation>();
             services.AddSingleton<ITaskRepository, TaskRepoImplementation>();
             services.AddSingleton<ITaskListRepository, TaskListRepoImplementation>();
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = $"https://{Configuration["Auth0:Domain"]}/";
+                options.Audience = Configuration["Auth0:Audience"];
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TodoApp_WebAPI", Version = "v1" });
+                var securitySchema = new OpenApiSecurityScheme
+                {
+                    Description = "Using the Authorization header with the Bearer scheme.",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                };
+
+                c.AddSecurityDefinition("Bearer", securitySchema);
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+          {
+              { securitySchema, new[] { "Bearer" } }
+          });
             });
         }
 
@@ -60,6 +90,8 @@ namespace TodoApp_WebAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TodoApp_WebAPI.Models;
 using TodoApp_WebAPI.Repositories;
@@ -10,6 +11,7 @@ namespace TodoApp_WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class GroupsController : ControllerBase
     {
         private readonly IGroupRepository _groupRepository;
