@@ -12,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using TodoApp_WebAPI.Models;
 using TodoApp_WebAPI.Repositories;
@@ -70,6 +71,12 @@ namespace TodoApp_WebAPI
               { securitySchema, new[] { "Bearer" } }
           });
             });
+
+            services.AddHttpsRedirection(options =>
+            {
+                options.RedirectStatusCode = (int)HttpStatusCode.TemporaryRedirect;
+                options.HttpsPort = 443;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -87,7 +94,7 @@ namespace TodoApp_WebAPI
                 builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
             });
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 
