@@ -87,7 +87,7 @@ namespace TodoApp_WebAPI
                 builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
             });
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
