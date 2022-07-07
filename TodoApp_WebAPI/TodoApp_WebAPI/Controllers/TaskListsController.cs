@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TodoApp_WebAPI.JWTUtilities;
 using TodoApp_WebAPI.Models;
 using TodoApp_WebAPI.Repositories;
 
@@ -17,23 +18,29 @@ namespace TodoApp_WebAPI.Controllers
     public class TaskListsController : ControllerBase
     {
         private readonly ITaskListRepository _taskListRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly HttpContext _httpContext;
 
-        public TaskListsController(ITaskListRepository taskListRepository)
+        public TaskListsController(ITaskListRepository taskListRepository, IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
         {
             _taskListRepository = taskListRepository;
+            _httpContext = httpContextAccessor.HttpContext;
+            _userRepository = userRepository;
         }
 
-        [HttpGet("userId")]
-        public async Task<ActionResult<IEnumerable<TaskList>>> GetTaskListsNotInsideAnyGroupByUserId(int userId)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<TaskList>>> GetTaskListsNotInsideAnyGroupByUserId()
         {
-            return await _taskListRepository.GetAllListNotInsideAnyGroup(userId);
+            string auth0Id = CommonFunction.Instance.GetAuth0UserIdFromPayload(_httpContext);
+            return await _taskListRepository.GetAllListNotInsideAnyGroup(await _userRepository.GetUserIdByAuth0Id(auth0Id));
         }
 
 
-        [HttpGet("{userId}/{groupId}")]
-        public async Task<ActionResult<IEnumerable<TaskList>>> GetTaskListInsideAGroupByUserId(int userId, int groupId)
+        [HttpGet("{groupId}")]
+        public async Task<ActionResult<IEnumerable<TaskList>>> GetTaskListInsideAGroupByUserId(int groupId)
         {
-            return await _taskListRepository.GetAllListInsideAGroup(userId, groupId);
+            string auth0Id = CommonFunction.Instance.GetAuth0UserIdFromPayload(_httpContext);
+            return await _taskListRepository.GetAllListInsideAGroup(await _userRepository.GetUserIdByAuth0Id(auth0Id), groupId);
         }
 
         [HttpPost]

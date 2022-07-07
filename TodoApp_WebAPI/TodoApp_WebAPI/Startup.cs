@@ -40,6 +40,7 @@ namespace TodoApp_WebAPI
             services.AddSingleton<IGroupRepository, GroupRepoImplementation>();
             services.AddSingleton<ITaskRepository, TaskRepoImplementation>();
             services.AddSingleton<ITaskListRepository, TaskListRepoImplementation>();
+            services.AddSingleton<IUserRepository, UserRepoImplementation>();
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

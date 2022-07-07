@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TodoApp_WebAPI.Models;
 using TodoApp_WebAPI.Repositories;
+using TodoApp_WebAPI.JWTUtilities;
 
 
 namespace TodoApp_WebAPI.Controllers
@@ -18,25 +19,20 @@ namespace TodoApp_WebAPI.Controllers
     public class GroupsController : ControllerBase
     {
         private readonly IGroupRepository _groupRepository;
+        private readonly IUserRepository _userRepository;
         private readonly HttpContext _httpContext;
-        public GroupsController(IGroupRepository groupRepository, IHttpContextAccessor httpContextAccessor)
+        public GroupsController(IGroupRepository groupRepository,IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
         {
             _groupRepository = groupRepository;
             _httpContext = httpContextAccessor.HttpContext;
+            _userRepository = userRepository;
         }
 
-        [HttpGet("userId")]
-        public async Task<ActionResult<IEnumerable<Group>>> GetGroupsByUserId(int userId)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Group>>> GetGroupsByUserId()
         {
-            if (_httpContext.Request.Headers.TryGetValue("Authorization", out var authHeader))
-            {
-                var stream = authHeader.ToString().Split(' ')[1];
-                var handler = new JwtSecurityTokenHandler();
-                var jsonToken = handler.ReadToken(stream);
-                var tokenS = jsonToken as JwtSecurityToken;
-                var iss = tokenS.Claims.First(claim => claim.Type == "iss").Value;
-            }
-            return await _groupRepository.GetAllGroupByUserId(userId);
+            string auth0Id = CommonFunction.Instance.GetAuth0UserIdFromPayload(_httpContext);
+            return await _groupRepository.GetAllGroupByUserId(await _userRepository.GetUserIdByAuth0Id(auth0Id));
         }
 
         [HttpPost]
