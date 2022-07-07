@@ -41,7 +41,6 @@ namespace TodoApp_WebAPI.Controllers
         {
             try
             {
-                taskList.Id = 0;
                 await _taskListRepository.CreateList(taskList);
                 return Ok();
             }

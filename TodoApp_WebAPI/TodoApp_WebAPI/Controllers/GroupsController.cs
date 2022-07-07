@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TodoApp_WebAPI.Models;
 using TodoApp_WebAPI.Repositories;
@@ -15,14 +18,24 @@ namespace TodoApp_WebAPI.Controllers
     public class GroupsController : ControllerBase
     {
         private readonly IGroupRepository _groupRepository;
-        public GroupsController(IGroupRepository groupRepository)
+        private readonly HttpContext _httpContext;
+        public GroupsController(IGroupRepository groupRepository, IHttpContextAccessor httpContextAccessor)
         {
             _groupRepository = groupRepository;
+            _httpContext = httpContextAccessor.HttpContext;
         }
 
         [HttpGet("userId")]
         public async Task<ActionResult<IEnumerable<Group>>> GetGroupsByUserId(int userId)
         {
+            if (_httpContext.Request.Headers.TryGetValue("Authorization", out var authHeader))
+            {
+                var stream = authHeader.ToString().Split(' ')[1];
+                var handler = new JwtSecurityTokenHandler();
+                var jsonToken = handler.ReadToken(stream);
+                var tokenS = jsonToken as JwtSecurityToken;
+                var iss = tokenS.Claims.First(claim => claim.Type == "iss").Value;
+            }
             return await _groupRepository.GetAllGroupByUserId(userId);
         }
 

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -17,6 +18,7 @@ using System.Threading.Tasks;
 using TodoApp_WebAPI.Models;
 using TodoApp_WebAPI.Repositories;
 using TodoApp_WebAPI.RepositoriesImplementation;
+using TodoApp_WebAPI.Requirements;
 
 namespace TodoApp_WebAPI
 {
@@ -47,6 +49,13 @@ namespace TodoApp_WebAPI
                 options.Authority = $"https://{Configuration["Auth0:Domain"]}/";
                 options.Audience = Configuration["Auth0:Audience"];
             });
+            services.AddAuthorization(config => 
+            {
+                var defaultAuthBuilder = new AuthorizationPolicyBuilder();
+                var defaultAuthPolicy = defaultAuthBuilder.AddRequirements(new JWTRequirement()).Build();
+                config.DefaultPolicy = defaultAuthPolicy;
+            });
+            services.AddScoped<IAuthorizationHandler, JWTRequirementHandler>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TodoApp_WebAPI", Version = "v1" });
@@ -71,12 +80,12 @@ namespace TodoApp_WebAPI
               { securitySchema, new[] { "Bearer" } }
           });
             });
-
             services.AddHttpsRedirection(options =>
             {
                 options.RedirectStatusCode = (int)HttpStatusCode.TemporaryRedirect;
                 options.HttpsPort = 443;
             });
+            services.AddHttpClient().AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -49,6 +49,7 @@ namespace TodoApp_WebAPI.DataAcess
         {
             using (TodoAppContext context = new TodoAppContext())
             {
+                taskList.Id = 0;
                 taskList.TaskCount = 0;
                 context.TaskLists.Add(taskList);
                 await context.SaveChangesAsync();

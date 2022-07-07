@@ -26,6 +26,7 @@ namespace TodoApp_WebAPI.Controllers
         [HttpGet("userId")]
         public async Task<ActionResult<List<Models.Task>>> GetAllTaskNotInsideAList(int userId)
         {
+
             return await _taskRepository.GetAllTaskNotInsideAList(userId);
         }
 
