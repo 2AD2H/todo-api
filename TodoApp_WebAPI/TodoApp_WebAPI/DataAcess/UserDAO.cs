@@ -29,7 +29,7 @@ namespace TodoApp_WebAPI.DataAcess
         {
             using (TodoAppContext context = new TodoAppContext())
             {
-                User user = new User { Id = 0, Name = username };
+                User user = new User { Id = 0, Email = username };
                 context.Users.Add(user);
                 await context.SaveChangesAsync();
                 int insetedUserId = user.Id;

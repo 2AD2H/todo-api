@@ -13,6 +13,6 @@ namespace TodoApp_WebAPI.Models
         public int Id { get; set; }
         [Required]
         [StringLength(150)]
-        public string Name { get; set; }
+        public string Email { get; set; }
     }
 }
