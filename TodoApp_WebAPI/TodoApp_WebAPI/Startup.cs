@@ -99,10 +99,11 @@ namespace TodoApp_WebAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoApp_WebAPI v1"));
             }
 
-            app.UseCors(builder =>
-            {
-                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-            });
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true)
+                .AllowCredentials());
 
             //app.UseHttpsRedirection();
 
