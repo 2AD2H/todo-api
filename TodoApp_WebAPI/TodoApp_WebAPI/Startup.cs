@@ -81,11 +81,11 @@ namespace TodoApp_WebAPI
               { securitySchema, new[] { "Bearer" } }
           });
             });
-            services.AddHttpsRedirection(options =>
-            {
-                options.RedirectStatusCode = (int)HttpStatusCode.TemporaryRedirect;
-                options.HttpsPort = 443;
-            });
+            //services.AddHttpsRedirection(options =>
+            //{
+            //    options.RedirectStatusCode = (int)HttpStatusCode.TemporaryRedirect;
+            //    options.HttpsPort = 443;
+            //});
             services.AddHttpClient().AddHttpContextAccessor();
         }
 
