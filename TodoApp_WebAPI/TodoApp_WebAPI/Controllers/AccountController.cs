@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using TodoApp_WebAPI.JWTUtilities;
+using TodoApp_WebAPI.Models;
 using TodoApp_WebAPI.Repositories;
 
 namespace TodoApp_WebAPI.Controllers
@@ -37,11 +38,11 @@ namespace TodoApp_WebAPI.Controllers
             }
         }
 
-        [HttpGet("GetCurrentUserId")]
+/*        [HttpGet("GetCurrentUserId")]
         public async Task<ActionResult<int>> GetUserIdByAuth0Id()
         {
             string auth0Id = CommonFunction.Instance.GetAuth0UserIdFromPayload(_httpContext);
             return await _userRepository.GetUserIdByAuth0Id(auth0Id);
-        }
+        }*/
     }
 }

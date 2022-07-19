@@ -45,7 +45,7 @@ namespace TodoApp_WebAPI.JWTUtilities
                 var handler = new JwtSecurityTokenHandler();
                 var jsonToken = handler.ReadToken(stream);
                 var tokenS = jsonToken as JwtSecurityToken;
-                var sub = tokenS.Claims.First(claim => claim.Type == "email").Value;
+                var sub = tokenS.Claims.First(claim => claim.Type == "aud").Value;
                 return sub;
             }
             return null;

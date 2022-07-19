@@ -31,16 +31,16 @@ namespace TodoApp_WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TaskList>>> GetTaskListsNotInsideAnyGroupByUserId()
         {
-            string auth0Id = CommonFunction.Instance.GetAuth0UserIdFromPayload(_httpContext);
-            return await _taskListRepository.GetAllListNotInsideAnyGroup(await _userRepository.GetUserIdByAuth0Id(auth0Id));
+            User user = HttpContext.Items["User"] as User;
+            return await _taskListRepository.GetAllListNotInsideAnyGroup(user.Id);
         }
 
 
         [HttpGet("{groupId}")]
         public async Task<ActionResult<IEnumerable<TaskList>>> GetTaskListInsideAGroupByUserId(int groupId)
         {
-            string auth0Id = CommonFunction.Instance.GetAuth0UserIdFromPayload(_httpContext);
-            return await _taskListRepository.GetAllListInsideAGroup(await _userRepository.GetUserIdByAuth0Id(auth0Id), groupId);
+            User user = HttpContext.Items["User"] as User;
+            return await _taskListRepository.GetAllListInsideAGroup(user.Id, groupId);
         }
 
         [HttpPost]
@@ -48,6 +48,8 @@ namespace TodoApp_WebAPI.Controllers
         {
             try
             {
+                User user = HttpContext.Items["User"] as User;
+                taskList.UserId = user.Id;
                 await _taskListRepository.CreateList(taskList);
                 return Ok();
             }

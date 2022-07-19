@@ -14,7 +14,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using TodoApp_WebAPI.JWTUtilities;
 using TodoApp_WebAPI.Models;
 using TodoApp_WebAPI.Repositories;
 using TodoApp_WebAPI.RepositoriesImplementation;
@@ -49,13 +51,17 @@ namespace TodoApp_WebAPI
             {
                 options.Authority = $"https://{Configuration["Auth0:Domain"]}/";
                 options.Audience = Configuration["Auth0:Audience"];
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    NameClaimType = ClaimTypes.NameIdentifier
+                };
             });
-            services.AddAuthorization(config => 
+/*            services.AddAuthorization(config => 
             {
                 var defaultAuthBuilder = new AuthorizationPolicyBuilder();
                 var defaultAuthPolicy = defaultAuthBuilder.AddRequirements(new JWTRequirement()).Build();
                 config.DefaultPolicy = defaultAuthPolicy;
-            });
+            });*/
             services.AddScoped<IAuthorizationHandler, JWTRequirementHandler>();
             services.AddSwaggerGen(c =>
             {
@@ -112,6 +118,8 @@ namespace TodoApp_WebAPI
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

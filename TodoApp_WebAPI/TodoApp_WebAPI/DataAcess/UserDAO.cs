@@ -39,12 +39,17 @@ namespace TodoApp_WebAPI.DataAcess
             }
         }
 
-        public async Task<int> GetUserIdByAuth0Id(string auth0Id)
+        public async Task<User> GetUserByAuth0Id(string auth0Id)
         {
             using (TodoAppContext context = new TodoAppContext())
             {
                 var acc = await context.Accounts.Where(acc => acc.Id == auth0Id).FirstOrDefaultAsync();
-                return acc.UserId;
+                if(acc == null)
+                {
+                    await CreateUserAccount(auth0Id, "none");
+                    acc = await context.Accounts.Where(acc => acc.Id == auth0Id).FirstOrDefaultAsync();
+                }
+                return context.Users.Find(acc.UserId);
             }
         }
     }

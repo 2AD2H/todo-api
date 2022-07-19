@@ -31,15 +31,15 @@ namespace TodoApp_WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Models.Task>>> GetAllTaskNotInsideAList()
         {
-            string auth0Id = CommonFunction.Instance.GetAuth0UserIdFromPayload(_httpContext);
-            return await _taskRepository.GetAllTaskNotInsideAList(await _userRepository.GetUserIdByAuth0Id(auth0Id));
+            User user = HttpContext.Items["User"] as User;
+            return await _taskRepository.GetAllTaskNotInsideAList(user.Id);
         }
 
         [HttpGet("{listId}")]
         public async Task<ActionResult<List<Models.Task>>> GetAllTaskInsideAList(int listId)
         {
-            string auth0Id = CommonFunction.Instance.GetAuth0UserIdFromPayload(_httpContext);
-            return await _taskRepository.GetAllTaskInsideAList(await _userRepository.GetUserIdByAuth0Id(auth0Id), listId);
+            User user = HttpContext.Items["User"] as User;
+            return await _taskRepository.GetAllTaskInsideAList(user.Id, listId);
         }
 
         [HttpPost]
@@ -47,6 +47,8 @@ namespace TodoApp_WebAPI.Controllers
         {
             try
             {
+                User user = HttpContext.Items["User"] as User;
+                task.UserId = user.Id;
                 task.Id = 0;
                 await _taskRepository.CreateTask(task);
                 return Ok();

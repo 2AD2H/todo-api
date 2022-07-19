@@ -31,8 +31,8 @@ namespace TodoApp_WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Group>>> GetGroupsByUserId()
         {
-            string auth0Id = CommonFunction.Instance.GetAuth0UserIdFromPayload(_httpContext);
-            return await _groupRepository.GetAllGroupByUserId(await _userRepository.GetUserIdByAuth0Id(auth0Id));
+            User user = HttpContext.Items["User"] as User;
+            return await _groupRepository.GetAllGroupByUserId(user.Id);
         }
 
         [HttpPost]
@@ -40,7 +40,9 @@ namespace TodoApp_WebAPI.Controllers
         {
             try
             {
+                User user = HttpContext.Items["User"] as User;
                 group.Id = 0;
+                group.UserId = user.Id;
                 await _groupRepository.CreateGroup(group);
                 return Ok();
             }
@@ -48,7 +50,6 @@ namespace TodoApp_WebAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
         }
 
         [HttpPut]
