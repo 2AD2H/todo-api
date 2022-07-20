@@ -52,6 +52,11 @@ namespace TodoApp_WebAPI.DataAcess
                 {
                     await TaskListDAO.Instance.IncreaseCountById((int)task.ListId);
                 }
+                if(task.Note == null)
+                {
+                    task.Note = "none";
+                }
+                task.CreatedDate = System.DateTime.Now;
                 context.Tasks.Add(task);
                 await context.SaveChangesAsync();
             }

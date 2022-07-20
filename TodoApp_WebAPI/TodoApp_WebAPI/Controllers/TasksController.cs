@@ -59,6 +59,25 @@ namespace TodoApp_WebAPI.Controllers
             }
         }
 
+
+        [HttpPost("{listId}")]
+        public async Task<IActionResult> CreateTaskÍnideList(Models.Task task, int listId)
+        {
+            try
+            {
+                User user = HttpContext.Items["User"] as User;
+                task.UserId = user.Id;
+                task.Id = 0;
+                task.ListId = listId;
+                await _taskRepository.CreateTask(task);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPut]
         public async Task<IActionResult> UpdateTask(Models.Task task)
         {

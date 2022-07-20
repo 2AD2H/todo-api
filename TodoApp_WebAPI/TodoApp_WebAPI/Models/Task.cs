@@ -14,7 +14,6 @@ namespace TodoApp_WebAPI.Models
         [Required]
         [StringLength(150)]
         public string Name { get; set; }
-        [Required]
         [StringLength(150)]
         public string Note { get; set; }
         [Required]
