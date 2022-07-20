@@ -61,7 +61,7 @@ namespace TodoApp_WebAPI.Controllers
 
 
         [HttpPost("{listId}")]
-        public async Task<IActionResult> CreateTaskÍnideList(Models.Task task, int listId)
+        public async Task<IActionResult> CreateTaskInsideList(Models.Task task, int listId)
         {
             try
             {
