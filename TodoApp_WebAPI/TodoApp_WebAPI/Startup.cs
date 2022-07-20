@@ -56,7 +56,7 @@ namespace TodoApp_WebAPI
                     NameClaimType = ClaimTypes.NameIdentifier
                 };
             });
-/*            services.AddAuthorization(config => 
+/*            services.AddAuthorization(config =>
             {
                 var defaultAuthBuilder = new AuthorizationPolicyBuilder();
                 var defaultAuthPolicy = defaultAuthBuilder.AddRequirements(new JWTRequirement()).Build();

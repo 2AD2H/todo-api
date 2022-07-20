@@ -21,7 +21,7 @@ namespace TodoApp_WebAPI.Controllers
         private readonly IUserRepository _userRepository;
         private readonly HttpContext _httpContext;
 
-        public TasksController(ITaskRepository taskRepository,IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
+        public TasksController(ITaskRepository taskRepository, IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
         {
             _taskRepository = taskRepository;
             _httpContext = httpContextAccessor.HttpContext;
@@ -78,11 +78,14 @@ namespace TodoApp_WebAPI.Controllers
             }
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateTask(Models.Task task)
+        [HttpPut("{taskId}")]
+        public async Task<IActionResult> UpdateTask(Models.Task task, int taskId)
         {
             try
             {
+                task.Id = taskId;
+                User user = HttpContext.Items["User"] as User;
+                task.UserId = user.Id;
                 await _taskRepository.UpdateTask(task);
             }
             catch (Exception ex)

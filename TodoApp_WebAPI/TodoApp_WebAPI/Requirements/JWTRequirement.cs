@@ -30,8 +30,8 @@ namespace TodoApp_WebAPI.Requirements
                 var handler = new JwtSecurityTokenHandler();
                 var jsonToken = handler.ReadToken(stream);
                 var tokenS = jsonToken as JwtSecurityToken;
-                var iss = tokenS.Claims.First(claim => claim.Type == "iss").Value;
-                if (iss != null) 
+                var sub = tokenS.Claims.First(claim => claim.Type == "sub").Value;
+                if (sub != null) 
                 {
                     context.Succeed(requirement);
                 }

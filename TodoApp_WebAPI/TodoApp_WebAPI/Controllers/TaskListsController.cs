@@ -65,6 +65,8 @@ namespace TodoApp_WebAPI.Controllers
         {
             try
             {
+                User user = HttpContext.Items["User"] as User;
+                taskList.UserId = user.Id;
                 await _taskListRepository.UpdateList(taskList);
             }
             catch (Exception ex)

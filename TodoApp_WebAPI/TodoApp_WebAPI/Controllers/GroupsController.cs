@@ -57,6 +57,8 @@ namespace TodoApp_WebAPI.Controllers
         {
             try
             {
+                User user = HttpContext.Items["User"] as User;
+                group.UserId = user?.Id;
                 await _groupRepository.RenameGroup(group);
             }
             catch (Exception ex)
