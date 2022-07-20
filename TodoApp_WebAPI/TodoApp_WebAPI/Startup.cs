@@ -21,6 +21,7 @@ using TodoApp_WebAPI.Models;
 using TodoApp_WebAPI.Repositories;
 using TodoApp_WebAPI.RepositoriesImplementation;
 using TodoApp_WebAPI.Requirements;
+using TodoApp_WebAPI.Services;
 
 namespace TodoApp_WebAPI
 {
@@ -36,6 +37,7 @@ namespace TodoApp_WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHostedService<TimedHostedService>();
             services.AddDbContext<TodoAppContext>(db => db.UseSqlServer(Configuration.GetConnectionString("TodoDb")));
             services.AddCors();
             services.AddControllers();
