@@ -11,15 +11,12 @@ namespace TodoApp_WebAPI.Models
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
         [StringLength(150)]
         public string Name { get; set; }
         [StringLength(150)]
         public string Note { get; set; }
-        [Required]
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public DateTime? DueDate { get; set; }
-        [Required]
         public int UserId { get; set; }
         public int? ListId { get; set; }
         public bool? IsImportant { get; set; }

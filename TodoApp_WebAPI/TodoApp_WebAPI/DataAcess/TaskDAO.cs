@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using TodoApp_WebAPI.Models;
 
@@ -69,20 +70,39 @@ namespace TodoApp_WebAPI.DataAcess
             {
                 Models.Task originalTask = context.Tasks.Find(task.Id);
                 // case 1: thêm task ở ngoài list vào 1 list nào đó 
-                if (originalTask.ListId == null && task.ListId != null)
+                if (originalTask.ListId == null && task.ListId != null && task.ListId != -1)
                 {
                     await TaskListDAO.Instance.IncreaseCountById((int)task.ListId);
                 }
                 // case 2: Chuyển task từ list này vào list khác
-                else if(originalTask.ListId != null && task.ListId != null)
+                else if(originalTask.ListId != null && task.ListId != null 
+                    && originalTask.ListId != task.ListId && task.ListId != -1)
                 {
                     await TaskListDAO.Instance.IncreaseCountById((int)task.ListId);
                     await TaskListDAO.Instance.DecreseCountById((int)originalTask.ListId);
                 }
                 // case 3: Chuyển task từ list ra ngoài
-                else if(originalTask.ListId != null && task.ListId == null)
+                else if(originalTask.ListId != null && task.ListId == -1)
                 {
                     await TaskListDAO.Instance.DecreseCountById((int)originalTask.ListId);
+                }
+                foreach(PropertyInfo pi in task.GetType().GetProperties())
+                {
+                    if(pi.PropertyType == typeof(int))
+                    {
+                        if ((int)pi.GetValue(task) == 0)
+                        {
+                            pi.SetValue(task, pi.GetValue(originalTask));
+                        }
+                    }
+                    if(pi.GetValue(task) == null)
+                    {
+                        pi.SetValue(task, pi.GetValue(originalTask));
+                    }
+                }
+                if(task.ListId == -1)
+                {
+                    task.ListId = null;
                 }
                 context.Entry<Models.Task>(originalTask).State = EntityState.Detached;
                 context.Tasks.Update(task);

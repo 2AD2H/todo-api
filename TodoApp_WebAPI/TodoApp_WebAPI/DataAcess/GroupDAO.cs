@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using TodoApp_WebAPI.Models;
 
@@ -66,6 +67,22 @@ namespace TodoApp_WebAPI.DataAcess
         {
             using (TodoAppContext context = new TodoAppContext())
             {
+                var originalGroup = context.Groups.Find(group.Id);
+                foreach (PropertyInfo pi in group.GetType().GetProperties())
+                {
+                    if (pi.PropertyType == typeof(int))
+                    {
+                        if ((int)pi.GetValue(group) == 0)
+                        {
+                            pi.SetValue(group, pi.GetValue(originalGroup));
+                        }
+                    }
+                    if (pi.GetValue(group) == null)
+                    {
+                        pi.SetValue(group, pi.GetValue(originalGroup));
+                    }
+                }
+                context.Entry<Models.Group>(originalGroup).State = EntityState.Detached;
                 context.Groups.Update(group);
                 await context.SaveChangesAsync();
             }

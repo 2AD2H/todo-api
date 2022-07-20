@@ -52,13 +52,14 @@ namespace TodoApp_WebAPI.Controllers
             }
         }
 
-        [HttpPut]
-        public async Task<IActionResult> RenameGroup( Group group)
+        [HttpPut("{groupId}")]
+        public async Task<IActionResult> RenameGroup( Group group, int groupId)
         {
             try
             {
                 User user = HttpContext.Items["User"] as User;
                 group.UserId = user?.Id;
+                group.Id = groupId;
                 await _groupRepository.RenameGroup(group);
             }
             catch (Exception ex)

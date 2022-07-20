@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using TodoApp_WebAPI.Models;
 
@@ -80,6 +81,26 @@ namespace TodoApp_WebAPI.DataAcess
         {
             using (TodoAppContext context = new TodoAppContext())
             {
+                var originalTaskList = context.TaskLists.Find(taskList.Id);
+                foreach (PropertyInfo pi in taskList.GetType().GetProperties())
+                {
+                    if (pi.PropertyType == typeof(int))
+                    {
+                        if ((int)pi.GetValue(taskList) == 0)
+                        {
+                            pi.SetValue(taskList, pi.GetValue(originalTaskList));
+                        }
+                    }
+                    if (pi.GetValue(taskList) == null)
+                    {
+                        pi.SetValue(taskList, pi.GetValue(originalTaskList));
+                    }
+                }
+                if(taskList.GroupId == -1)
+                {
+                    taskList.GroupId = null;
+                }
+                context.Entry<Models.TaskList>(originalTaskList).State = EntityState.Detached;
                 context.TaskLists.Update(taskList);
                 await context.SaveChangesAsync();
             }

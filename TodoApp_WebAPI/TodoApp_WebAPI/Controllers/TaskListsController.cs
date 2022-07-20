@@ -60,13 +60,14 @@ namespace TodoApp_WebAPI.Controllers
 
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateTaskList( TaskList taskList)
+        [HttpPut("{taskListId}")]
+        public async Task<IActionResult> UpdateTaskList( TaskList taskList, int taskListId)
         {
             try
             {
                 User user = HttpContext.Items["User"] as User;
                 taskList.UserId = user.Id;
+                taskList.Id = taskListId;
                 await _taskListRepository.UpdateList(taskList);
             }
             catch (Exception ex)
