@@ -8,7 +8,7 @@ namespace TodoApp_WebAPI.Repositories
     {
         public Task<List<TaskList>> GetAllListNotInsideAnyGroup(int userId);
         public Task<List<TaskList>> GetAllListInsideAGroup(int userId, int groupId);
-        public System.Threading.Tasks.Task CreateList(TaskList taskList);
+        public System.Threading.Tasks.Task<TaskList> CreateList(TaskList taskList);
         public System.Threading.Tasks.Task DeleteList(int taskListId);
         public System.Threading.Tasks.Task UpdateList(TaskList taskList);
 

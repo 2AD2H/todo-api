@@ -7,9 +7,9 @@ namespace TodoApp_WebAPI.RepositoriesImplementation
 {
     public class TaskRepoImplementation : ITaskRepository
     {
-        public async System.Threading.Tasks.Task CreateTask(Models.Task task)
+        public async System.Threading.Tasks.Task<Models.Task> CreateTask(Models.Task task)
         {
-            await TaskDAO.Instance.CreateTask(task);
+            return await TaskDAO.Instance.CreateTask(task);
         }
 
         public async System.Threading.Tasks.Task DeleteTask(int taskId)

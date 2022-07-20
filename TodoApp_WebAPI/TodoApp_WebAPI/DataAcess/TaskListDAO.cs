@@ -45,7 +45,7 @@ namespace TodoApp_WebAPI.DataAcess
             }
         }
 
-        public async System.Threading.Tasks.Task CreateList(TaskList taskList)
+        public async System.Threading.Tasks.Task<TaskList> CreateList(TaskList taskList)
         {
             using (TodoAppContext context = new TodoAppContext())
             {
@@ -53,6 +53,7 @@ namespace TodoApp_WebAPI.DataAcess
                 taskList.TaskCount = 0;
                 context.TaskLists.Add(taskList);
                 await context.SaveChangesAsync();
+                return taskList;
             }
         }
 

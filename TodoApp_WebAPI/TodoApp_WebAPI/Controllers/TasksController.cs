@@ -50,8 +50,8 @@ namespace TodoApp_WebAPI.Controllers
                 User user = HttpContext.Items["User"] as User;
                 task.UserId = user.Id;
                 task.Id = 0;
-                await _taskRepository.CreateTask(task);
-                return Ok();
+                //await _taskRepository.CreateTask(task);
+                return Ok(await _taskRepository.CreateTask(task));
             }
             catch (Exception ex)
             {

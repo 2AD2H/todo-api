@@ -25,9 +25,9 @@ namespace TodoApp_WebAPI.RepositoriesImplementation
             return await GroupDAO.Instance.GetAllGroupByUserId(userId);
         }
 
-        async System.Threading.Tasks.Task IGroupRepository.CreateGroup(Group group)
+        async System.Threading.Tasks.Task<Group> IGroupRepository.CreateGroup(Group group)
         {
-            await GroupDAO.Instance.CreateGroup(group);
+            return await GroupDAO.Instance.CreateGroup(group);
         }
     }
 }

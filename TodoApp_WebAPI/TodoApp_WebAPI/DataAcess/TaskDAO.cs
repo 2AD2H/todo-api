@@ -44,7 +44,7 @@ namespace TodoApp_WebAPI.DataAcess
             }        
         }
 
-        public async System.Threading.Tasks.Task CreateTask(Models.Task task)
+        public async System.Threading.Tasks.Task<Models.Task> CreateTask(Models.Task task)
         {
             using (TodoAppContext context = new TodoAppContext())
             {
@@ -59,6 +59,7 @@ namespace TodoApp_WebAPI.DataAcess
                 task.CreatedDate = System.DateTime.Now;
                 context.Tasks.Add(task);
                 await context.SaveChangesAsync();
+                return task;
             }
         }
 

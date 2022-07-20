@@ -43,8 +43,8 @@ namespace TodoApp_WebAPI.Controllers
                 User user = HttpContext.Items["User"] as User;
                 group.Id = 0;
                 group.UserId = user.Id;
-                await _groupRepository.CreateGroup(group);
-                return Ok();
+                //await _groupRepository.CreateGroup(group);
+                return Ok(await _groupRepository.CreateGroup(group));
             }
             catch (Exception ex)
             {

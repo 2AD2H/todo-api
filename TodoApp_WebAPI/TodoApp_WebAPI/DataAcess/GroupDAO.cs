@@ -35,12 +35,13 @@ namespace TodoApp_WebAPI.DataAcess
             }
         }
 
-        public async System.Threading.Tasks.Task CreateGroup(Group group)
+        public async System.Threading.Tasks.Task<Group> CreateGroup(Group group)
         {
             using (TodoAppContext context = new TodoAppContext())
             {
                 context.Groups.Add(group);
                 await context.SaveChangesAsync();
+                return group;
             }
         }
 
