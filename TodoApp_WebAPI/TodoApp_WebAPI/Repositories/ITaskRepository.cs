@@ -12,5 +12,7 @@ namespace TodoApp_WebAPI.Repositories
         public System.Threading.Tasks.Task UpdateTask(Models.Task task);
         public System.Threading.Tasks.Task DeleteTask(int taskId);
         public System.Threading.Tasks.Task DeleteTaskInsideAList(int listId);
+        public Task<List<Models.Task>> GetAllTaskDue();
+
     }
 }

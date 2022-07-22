@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using TodoApp_WebAPI.Models;
+using TodoApp_WebAPI.Others;
 
 namespace TodoApp_WebAPI.DataAcess
 {
@@ -146,6 +148,17 @@ namespace TodoApp_WebAPI.DataAcess
                 {
                     return;
                 }
+            }
+        }
+        // return all task having its due date just coming 
+        public async Task<List<Models.Task>> GetAllTaskDue()
+        {
+            List<Models.Task> tasks = new List<Models.Task>();
+            using (TodoAppContext context = new TodoAppContext())
+            {
+                return await context.Tasks.Where(t => t.DueDate >= DateTime.Now 
+                && t.DueDate <= DateTime.Now + TimeSpan.FromSeconds(Globals.TIME_INTERVAL))
+                    .ToListAsync();
             }
         }
     }

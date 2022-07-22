@@ -22,6 +22,11 @@ namespace TodoApp_WebAPI.RepositoriesImplementation
             await TaskDAO.Instance.DeleteTaskInsideAList(listId);
         }
 
+        public async Task<List<Models.Task>> GetAllTaskDue()
+        {
+            return await TaskDAO.Instance.GetAllTaskDue();
+        }
+
         public async Task<List<Models.Task>> GetAllTaskInsideAList(int userId, int listId)
         {
             return await TaskDAO.Instance.GetAllTaskInsideAList(userId, listId);
