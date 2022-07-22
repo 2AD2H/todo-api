@@ -21,7 +21,7 @@ public class TimedHostedService : IHostedService, IDisposable
         _logger.LogInformation("Timed Hosted Service running.");
 
         _timer = new Timer(DoWork, null, TimeSpan.Zero,
-            TimeSpan.FromSeconds(5));
+            TimeSpan.FromSeconds(60));
 
         return Task.CompletedTask;
     }
@@ -32,6 +32,9 @@ public class TimedHostedService : IHostedService, IDisposable
 
         _logger.LogInformation(
             "Timed Hosted Service is working. Count: {Count}", count);
+
+        EmailService emailService = new EmailService();
+        //emailService.SendEmail("", null);
     }
 
     public Task StopAsync(CancellationToken stoppingToken)
