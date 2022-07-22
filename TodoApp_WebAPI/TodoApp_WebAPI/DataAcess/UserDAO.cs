@@ -52,5 +52,12 @@ namespace TodoApp_WebAPI.DataAcess
                 return context.Users.Find(acc.UserId);
             }
         }
+        public async Task<User> GetUserById(int id)
+        {
+            using (TodoAppContext context = new TodoAppContext())
+            {
+                return await context.Users.FindAsync(id);
+            }
+        }
     }
 }

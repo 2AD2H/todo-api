@@ -54,7 +54,7 @@ namespace TodoApp_WebAPI.Services
                 duedateMessage.IsBodyHtml = true;
                 string taskName = task.Name;
                 string taskDuedate = ((DateTime)task.DueDate).ToString("MM/dd/yyyy hh:mm tt");
-                duedateMessage.Body = "<h1>Hey there</h1><br/>Your task: <b>"+taskName+"</b> is about to due at "+taskDuedate;
+                duedateMessage.Body = "<h1>Hey there</h1><br/>Your task: <b>"+taskName+"</b> was due at "+taskDuedate;
                 duedateMessage.To.Add(emailTo);
             }
             catch (Exception)

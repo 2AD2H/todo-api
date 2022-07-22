@@ -16,5 +16,9 @@ namespace TodoApp_WebAPI.RepositoriesImplementation
         {
             return await UserDAO.Instance.GetUserByAuth0Id(auth0Id, email);
         }
+        public async Task<User> GetUserById(int id)
+        {
+            return await UserDAO.Instance.GetUserById(id);
+        }
     }
 }

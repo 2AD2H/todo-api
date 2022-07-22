@@ -22,5 +22,7 @@ namespace TodoApp_WebAPI.Models
         public bool? IsImportant { get; set; }
         public bool? IsCompleted { get; set; }
         public bool? IsInMyDay { get; set; }
+        public bool? IsMailed { get; set; }
+
     }
 }

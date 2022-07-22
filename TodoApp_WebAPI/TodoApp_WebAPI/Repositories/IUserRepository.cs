@@ -8,5 +8,6 @@ namespace TodoApp_WebAPI.Repositories
     {
         public System.Threading.Tasks.Task CreateUserAccount(string auth0Id, string username);
         public Task<User> GetUserByAuth0Id(string auth0Id, string email);
+        public Task<User> GetUserById(int id);
     }
 }

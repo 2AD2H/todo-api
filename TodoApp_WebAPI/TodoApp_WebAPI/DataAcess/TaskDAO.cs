@@ -156,8 +156,9 @@ namespace TodoApp_WebAPI.DataAcess
             List<Models.Task> tasks = new List<Models.Task>();
             using (TodoAppContext context = new TodoAppContext())
             {
-                return await context.Tasks.Where(t => t.DueDate >= DateTime.Now 
-                && t.DueDate <= DateTime.Now + TimeSpan.FromSeconds(Globals.TIME_INTERVAL))
+                return await context.Tasks
+                    .Where(t => DateTime.Now >= t.DueDate 
+                    && (bool)t.IsCompleted == false && (bool)t.IsMailed == false)
                     .ToListAsync();
             }
         }
