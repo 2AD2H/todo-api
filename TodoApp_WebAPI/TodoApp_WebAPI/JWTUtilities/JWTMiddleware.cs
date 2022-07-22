@@ -30,7 +30,8 @@ namespace TodoApp_WebAPI.JWTUtilities
         private async Task attachUserToContext(HttpContext context, IUserRepository userRepository)
         {
             var id = context.User.Identity.Name;
-            context.Items["User"] = await userRepository.GetUserByAuth0Id(id);
+            var email = context.User.Claims.First(c => c.Type == "https://example.com/email").Value;
+            context.Items["User"] = await userRepository.GetUserByAuth0Id(id, email);
         }
     }
 }
