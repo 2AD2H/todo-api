@@ -27,9 +27,19 @@ namespace TodoApp_WebAPI.RepositoriesImplementation
             return TaskDAO.Instance.GetAllTaskDue();
         }
 
+        public async Task<List<Models.Task>> GetAllTaskInMyDay(int userId)
+        {
+            return await TaskDAO.Instance.GetAllTaskInMyDay(userId);
+        }
+
         public async Task<List<Models.Task>> GetAllTaskInsideAList(int userId, int listId)
         {
             return await TaskDAO.Instance.GetAllTaskInsideAList(userId, listId);
+        }
+
+        public async Task<List<Models.Task>> GetAllTaskIsImportant(int userId)
+        {
+            return await TaskDAO.Instance.GetAllTaskImportant(userId);
         }
 
         public async Task<List<Models.Task>> GetAllTaskNotInsideAList(int userId)

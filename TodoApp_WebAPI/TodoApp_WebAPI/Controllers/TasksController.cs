@@ -116,5 +116,19 @@ namespace TodoApp_WebAPI.Controllers
             }
             return NoContent();
         }
+
+        [HttpGet("Myday")]
+        public async Task<ActionResult<List<Models.Task>>> GetTaskInMyDay()
+        {
+            User user = HttpContext.Items["User"] as User;
+            return await _taskRepository.GetAllTaskInMyDay(user.Id);
+        }
+
+        [HttpGet("Important")]
+        public async Task<ActionResult<List<Models.Task>>> GetTaskImportant()
+        {
+            User user = HttpContext.Items["User"] as User;
+            return await _taskRepository.GetAllTaskIsImportant(user.Id);
+        }
     }
 }

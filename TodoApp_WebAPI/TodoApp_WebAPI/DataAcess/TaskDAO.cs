@@ -47,6 +47,24 @@ namespace TodoApp_WebAPI.DataAcess
             }        
         }
 
+        public async Task<List<Models.Task>> GetAllTaskInMyDay(int userId)
+        {
+            List<Models.Task> tasks = new List<Models.Task>();
+            using (TodoAppContext context = new TodoAppContext())
+            {
+                return await context.Tasks.Where(t => t.UserId == userId && t.IsInMyDay == true).ToListAsync();
+            }
+        }
+
+        public async Task<List<Models.Task>> GetAllTaskImportant(int userId)
+        {
+            List<Models.Task> tasks = new List<Models.Task>();
+            using (TodoAppContext context = new TodoAppContext())
+            {
+                return await context.Tasks.Where(t => t.UserId == userId && t.IsImportant == true).ToListAsync();
+            }
+        }
+
         public async System.Threading.Tasks.Task<Models.Task> CreateTask(Models.Task task)
         {
             using (TodoAppContext context = new TodoAppContext())
